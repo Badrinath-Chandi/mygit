@@ -1,6 +1,6 @@
 /* A typical recursive implementation of quick sort */
 #include<stdio.h>
-
+#if 0
 // A utility function to swap two elements
 void swap(int* a, int* b)
 {
@@ -45,4 +45,76 @@ int main()
 	printArray(arr, n);
 	getchar();
 	return 0;
+}
+#endif
+//Simple Version
+
+#include<iostream>
+#include<stdio.h>
+#include <time.h>
+
+#define MAX 10000
+//int arr[] = { 4, 1, 3, 10, 12, 5, 8 ,15 ,6 };
+int arr[MAX];
+
+
+
+using namespace std;
+
+class sort
+{
+public:
+	void swap(int s, int n)
+	{
+		if (arr[s] == arr[n])
+			return;
+		arr[s] ^= arr[n];
+		arr[n] ^= arr[s];
+		arr[s] ^= arr[n];
+	}
+	int getPartition(int s, int n) {
+		int i= s;
+		int pivot = arr[s];
+		s++;
+		int j = n;		
+		while (1) {
+			while (arr[s] < pivot)
+				s++;
+			while (arr[j] > pivot)
+				j--;
+			if (s < j)
+				swap(s, j);
+			else {
+				swap(i, j);
+				return j;
+			}
+		}
+	}
+	void qsort(int s,int n)
+	{
+		if (s < n) {
+			int p = getPartition(s, n);
+			qsort(s, p - 1);
+			qsort(p + 1, n);
+		}
+	}
+};
+
+int main()
+{
+	for (int i = 0; i < MAX; i++)
+		arr[i] = i;
+	int n = sizeof(arr) / sizeof(arr[0]);
+	sort s;
+	clock_t st, et;
+	st = clock();
+	s.qsort(0, n-1);
+	et = clock();
+	double duration = (double)(et - st) / CLOCKS_PER_SEC;
+	cout << "qsort duration " << duration << endl;
+	/*for (int i = 0; i < n; i++)
+		cout << arr[i] << " ";*/
+
+	cout << endl;
+	getchar();
 }
